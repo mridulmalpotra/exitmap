@@ -155,6 +155,14 @@ def parse_cmd_args():
                              "delay.  This randomises the build delay.  The "
                              "default is 0.")
 
+    # Adds entry for specifying the interval at which the cached-consensus is
+    # refreshed in minutes. The default is 180 hours
+
+    parser.add_argument("-c", "--consensus-delay", type=float, default=180,
+                        help="The cached-consensus refresh delay in minutes. "
+                        "If specified the consensus file will be updating "
+                        "using this time delay period. ")
+
     # Create /tmp/exitmap_tor_datadir-$USER to allow many users to run
     # exitmap in parallel.
 
