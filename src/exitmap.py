@@ -45,6 +45,8 @@ import relayselector
 
 from eventhandler import EventHandler
 from stats import Statistics
+from random import sample
+
 
 log = logging.getLogger(__name__)
 
@@ -191,6 +193,7 @@ def parse_cmd_args():
                              "is used as first hop.  This relay should be "
                              "under your control.")
 
+    ## TODO default output to a log file when daemonized
     parser.add_argument("-o", "--logfile", type=str, default=None,
                         help="Filename to which log output should be written "
                              "to.")
@@ -209,6 +212,7 @@ def parse_cmd_args():
     parser.add_argument("-V", "--version", action="version",
                         version="%(prog)s 2015.04.06")
 
+    ## TODO optional argument to specify all modules
     parser.add_argument("module", nargs='+',
                         help="Run the given module (available: %s)." %
                         ", ".join(get_modules()))
@@ -339,7 +343,15 @@ def select_exits(args, module):
     log.debug("Successfully selected exit relays after %s." %
               str(datetime.datetime.now() - before))
 
-    return exit_destinations
+    # Restricting exit destinations length to 5 for faster testing.
+    # TODO: To be reverted to the original
+
+    test_dict = {}
+    test_key = sample(set(exit_destinations.keys()), 5)
+    test_dict = { value:exit_destinations[value] for value in test_key }
+    print test_dict
+    raw_input()
+    return test_dict
 
 def run_module(module_name, args, controller, socks_port, stats):
     """
