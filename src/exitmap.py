@@ -46,6 +46,7 @@ import relayselector
 from eventhandler import EventHandler
 from stats import Statistics
 from random import sample
+from consensusupdate import initialize
 
 
 log = logging.getLogger(__name__)
@@ -159,8 +160,9 @@ def parse_cmd_args():
 
     # Adds entry for specifying the interval at which the cached-consensus is
     # refreshed in minutes. The default is 180 hours
+    # TODO: limits for consensus fetching - discuss and finalize
 
-    parser.add_argument("-c", "--consensus-delay", type=float, default=180,
+    parser.add_argument("-c", "--consensus-delay", type=int, default=180,
                         help="The cached-consensus refresh delay in minutes. "
                         "If specified the consensus file will be updating "
                         "using this time delay period. ")
@@ -263,8 +265,10 @@ def main():
     log.debug("Redirecting Tor's logging to /dev/null.")
     controller.set_conf("Log", "err file /dev/null")
 
-    # We already have the current consensus, so we don't need additional
-    # descriptors or the streams fetching them.
+    # ~We already have the current consensus, so we don't need additional~
+    # ~descriptors or the streams fetching them.~
+
+    # TODO Unlike single scans, we will be needing server descriptors to be fetched on its own using the
 
     controller.set_conf("FetchServerDescriptors", "0")
 
